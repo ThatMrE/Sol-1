@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sol-1 — Spira spirulina photobioreactor</title>
+<meta name="description" content="Documentation for Sol-1, a countertop spirulina photobioreactor designed by Spira Inc.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2312402c'/%3E%3Ccircle cx='32' cy='32' r='14' fill='%238fe7bd'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --bg:#fbfcfa; --fg:#1d2420; --muted:#5d6a63; --line:#e1e7e3; --code:#f1f5f2;
+    --accent:#1f7a4d; --accent-soft:#e6f4ec; --table-head:#f3f7f4;
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0f1512; --fg:#e6ece8; --muted:#9aa89f; --line:#243029; --code:#161f1a;
+           --accent:#6fd39a; --accent-soft:#16291e; --table-head:#141d18; }
+  }
+  *{box-sizing:border-box}
+  html{background:var(--bg)}
+  body{margin:0; font-family:var(--font); color:var(--fg); background:var(--bg); line-height:1.6; font-size:16px}
+  .wrap{max-width:860px; margin:0 auto; padding:24px 20px 96px}
+  header.site{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:8px 0 20px; border-bottom:1px solid var(--line); margin-bottom:28px; font-size:14px; color:var(--muted)}
+  header.site a{color:var(--muted); text-decoration:none}
+  header.site a:hover{color:var(--accent)}
+  header.site .brand{font-weight:700; color:var(--fg); letter-spacing:.02em}
+  article h1{font-size:2.2rem; line-height:1.15; margin:0 0 .4em; letter-spacing:-.02em}
+  article h2{font-size:1.5rem; margin:2.2em 0 .6em; padding-top:.6em; border-top:1px solid var(--line); letter-spacing:-.01em}
+  article h3{font-size:1.15rem; margin:1.8em 0 .5em}
+  article hr + h2{border-top:0; padding-top:0; margin-top:1.2em}
+  article h2:target,article h3:target{scroll-margin-top:16px}
+  article a{color:var(--accent)}
+  article p,article ul,article ol{margin:0 0 1em}
+  article li{margin:.25em 0}
+  article blockquote{margin:1.2em 0; padding:.8em 1em; border-left:4px solid var(--accent); background:var(--accent-soft); border-radius:0 8px 8px 0; color:var(--fg)}
+  article blockquote p:last-child{margin:0}
+  article hr{border:0; border-top:1px solid var(--line); margin:2em 0}
+  article code{font-family:var(--mono); font-size:.9em; background:var(--code); padding:.15em .4em; border-radius:5px}
+  article pre{background:var(--code); border:1px solid var(--line); border-radius:10px; padding:14px 16px; overflow-x:auto; line-height:1.5}
+  article pre code{background:none; padding:0; font-size:.86em}
+  article table{border-collapse:collapse; width:100%; margin:1em 0 1.4em; font-size:.94em; display:block; overflow-x:auto}
+  article th,article td{border:1px solid var(--line); padding:8px 12px; text-align:left; vertical-align:top}
+  article th{background:var(--table-head); font-weight:600}
+  article strong{font-weight:650}
+  article img{max-width:100%}
+  .mermaid{background:var(--code); border:1px solid var(--line); border-radius:10px; padding:16px; margin:1em 0 1.4em; overflow-x:auto; font-family:var(--mono); font-size:.86em; line-height:1.5}
+  .mermaid svg{display:block; margin:0 auto; max-width:100%; height:auto}
+  .status{color:var(--muted); font-size:14px; padding:40px 0; text-align:center}
+  .status.error{color:#b3261e}
+  footer.site{margin-top:64px; padding-top:20px; border-top:1px solid var(--line); font-size:13px; color:var(--muted)}
+  footer.site a{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="site">
+    <span class="brand">Sol-1</span>
+    <nav><a href="https://github.com/ThatMrE/Sol-1">GitHub</a> &nbsp;·&nbsp; <a href="README.md">README.md</a></nav>
+  </header>
+  <article id="doc"><div class="status">Loading README…</div></article>
+  <footer class="site">Rendered from <a href="README.md">README.md</a> in the repository. Edit the README and the site updates on the next deploy.</footer>
+</div>
+
+<script src="vendor/marked.umd.js"></script>
+<script>
+(async () => {
+  const doc = document.getElementById('doc');
+  const fail = msg => { doc.innerHTML = `<div class="status error">${msg}</div>`; };
+  let md;
+  try {
+    const r = await fetch('README.md', { cache: 'no-cache' });
+    if (!r.ok) throw new Error(r.status);
+    md = await r.text();
+  } catch (e) { return fail(`Could not load README.md (${e.message}).`); }
+
+  // Give headings GitHub-style ids so the README's own anchor links work.
+  const slug = s => s.toLowerCase().replace(/<[^>]+>/g, '').replace(/[^\w\s-]/g, '').trim().replace(/\s/g, '-');
+  const seen = {};
+  const renderer = {
+    heading({ tokens, depth }) {
+      const text = this.parser.parseInline(tokens);
+      let id = slug(text); if (seen[id] != null) id += '-' + (++seen[id]); else seen[id] = 0;
+      return `<h${depth} id="${id}">${text}</h${depth}>\n`;
+    },
+    code({ text, lang }) {
+      if (lang === 'mermaid') return `<pre class="mermaid">${text.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</pre>\n`;
+      const esc = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return `<pre><code class="language-${lang || ''}">${esc}</code></pre>\n`;
+    },
+  };
+  marked.use({ gfm: true, renderer });
+  doc.innerHTML = marked.parse(md);
+
+  // Render Mermaid diagrams if the library can be reached; otherwise leave the source visible.
+  if (document.querySelector('pre.mermaid')) {
+    try {
+      const m = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');
+      const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+      m.default.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'neutral' });
+      await m.default.run({ querySelector: 'pre.mermaid' });
+    } catch (e) { /* diagram source stays as a code block */ }
+  }
+
+  if (location.hash) { const t = document.getElementById(location.hash.slice(1)); if (t) t.scrollIntoView(); }
+})();
+</script>
+</body>
+</html>
