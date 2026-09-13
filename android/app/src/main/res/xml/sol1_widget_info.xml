@@ -9,7 +9,7 @@
     android:targetCellHeight="2"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="1800000"
-    android:initialLayout="@layout/glance_default_loader_layout"
+    android:initialLayout="@layout/widget_loading"
     android:widgetCategory="home_screen|keyguard"
     android:widgetFeatures="configuration_optional|reconfigurable"
     android:configure="com.thatmre.sol1.widget.WidgetConfigActivity" />
