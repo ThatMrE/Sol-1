@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sol-1</string>
+    <string name="widget_label">Sol-1 streak</string>
+    <string name="widget_description">Your day count, on the lock screen and home screen.</string>
+</resources>

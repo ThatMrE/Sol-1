@@ -1,58 +1,60 @@
 # Sol-1
 
-**Sol-1 stands for day one.** It is a sobriety and habit tracker that puts your streak where you will see it a hundred times a day: your phone's lock screen.
+**Sol-1 stands for day one.** It is a sobriety and habit tracker for Android with a widget that puts your streak on the lock screen and home screen, and keeps the number current by itself.
 
-Live at **[sol-1.netlify.app](https://sol-1.netlify.app)**. Built for the Pixel 10, works on any phone that can set a wallpaper.
+Site: **[sol-1.netlify.app](https://sol-1.netlify.app)** · APK: **[latest release](https://github.com/ThatMrE/Sol-1/releases/latest)**
 
 ---
 
 ## What it does
 
-- **Days since.** Start a counter from the moment you decided: last drink, last cigarette, last anything. It counts up in days, hours and minutes.
-- **Daily habits.** Gym, reading, meditation. Tap *Check in* each day; miss a day and the streak restarts, but your history is kept.
-- **I slipped.** A reset is logged, not hidden. Your longest streak, total days and number of resets stay on the card. Day one starts again from right now.
+- **Days since.** Start a counter from the moment you decided: last drink, last cigarette, last anything. It counts up in days, hours, minutes and seconds.
+- **Daily habits.** Gym, reading, meditation. Check in each day; miss one and the streak restarts, but the history stays.
+- **I slipped.** A reset is logged, not hidden. Longest streak, total days and reset count stay on the card. Day one starts again from right now.
 - **Milestones.** 1, 3, 7, 14, 30, 60, 90, 180, 365 days and beyond, with a progress bar toward the next one.
-- **Lock screen wallpaper.** Renders your trackers into a 1080 × 2424 image (the Pixel 10's exact resolution) with the number placed below the clock zone. Six themes, optional start date, milestone bar, a 28-day dot grid for habits, and a daily line at the bottom.
-- **Private by design.** Nothing leaves your phone. Data lives in the browser's local storage, with JSON export and import for backups.
-- **Installable.** Add it to your home screen and it opens like an app and works offline.
+- **The widget.** Shows a tracker's name, the big number, the unit, and the next milestone. Habit widgets get a *Check in* button so you never have to open the app. Tap the widget to open Sol-1. Long-press it to change which tracker it shows. Follows your Material You colors.
+- **Always current.** The count refreshes on the widget's own schedule and again just after midnight, after a reboot, and after time or time zone changes.
+- **Private by design.** No account, no network, no analytics. Data lives on the phone in the app's DataStore.
 
-## Setting your lock screen on a Pixel
+## Install on a Pixel
 
-1. Open [sol-1.netlify.app](https://sol-1.netlify.app) and add a tracker.
-2. Tap **Share image** and pick **Photos** (or tap **Download PNG**, which lands in Files → Downloads).
-3. Long-press an empty spot on the home screen → **Wallpaper & style** → **Lock screen** → **More wallpapers** → **My photos**, and pick the image.
-4. Apply it to the **Lock screen only** and skip any effects or zoom so the number stays where it was designed to sit.
-5. The wallpaper is a still image. When you want the count to refresh, open Sol-1 and share or download again. Two taps a day makes a good check-in ritual.
+1. Download `sol-1.apk` from the [latest release](https://github.com/ThatMrE/Sol-1/releases/latest) on the phone.
+2. Open it and allow installs from your browser when Android asks. The build is signed with a debug key, which is fine for sideloading.
+3. Open Sol-1 and add a tracker.
 
-In Chrome, tap ⋮ → **Add to Home screen** (or the Install button in the app) so it launches like an app.
+## Put it on the lock screen
 
-## Why a wallpaper and not a widget
+1. **Settings → Display & touch → Lock screen → Widgets on lock screen** (Android 16 QPR2 or later).
+2. Lock the phone, swipe to the widget page, tap **Add**, and pick **Sol-1**.
+3. Long-press the widget to choose which tracker it shows. Add several if you track more than one thing.
 
-Android 16 QPR2 brought lock screen widgets back to Pixel phones, but a widget has to come from a native Android app. A web page cannot be one. A wallpaper is the next best thing: it needs no app store, no permissions, and no account, and it is on screen every time you pick up the phone. If a self-updating widget ever matters more than that simplicity, the rendering logic in `app.js` is the starting point for a native version.
+The same widget goes on the home screen: long-press the home screen → **Widgets** → **Sol-1**.
 
-## Files
+## Project layout
 
-| File | Purpose |
-|---|---|
-| `index.html` | The app: tracker cards, lock screen preview and options, instructions, backup |
-| `app.js` | State, streak maths, the canvas wallpaper renderer, share and download |
-| `manifest.webmanifest` | Installable web app metadata |
-| `sw.js` | Service worker so the app loads offline |
-| `icon.svg`, `icon-*.png` | App icons (the PNGs are rendered from the SVG) |
-
-No build step. Netlify deploys the repository root as static files on every push to `master`.
-
-## Running locally
-
-Any static server works. For example:
-
-```bash
-python3 -m http.server 8000
+```
+android/                      Gradle project (open this folder in Android Studio)
+  app/src/main/java/com/thatmre/sol1/
+    data/    Models, streak maths, DataStore repository
+    ui/      Compose app: tracker cards, add/edit, reset and delete dialogs
+    widget/  Glance widget, receiver, midnight refresh, widget config screen
+  app/src/main/res/xml/sol1_widget_info.xml   Widget metadata (home_screen|keyguard, resizable)
+.github/workflows/android.yml Builds the APK on every push; publishes a release on v* tags
+index.html                    The landing page at sol-1.netlify.app
 ```
 
-Then open http://localhost:8000. The service worker only registers on HTTPS, so local runs simply skip offline caching.
+## Building
 
-## Notes
+Requirements: JDK 17, Android SDK with platform 35 and build-tools 35.0.0. Gradle 8.9 or newer.
 
-- The display numerals use the Inter Tight font from Google Fonts and fall back to Roboto or the system font if it cannot load.
-- Clearing site data erases your trackers. Use **Export backup** in the app if the streak matters to you.
+```bash
+cd android
+gradle assembleDebug
+# app/build/outputs/apk/debug/app-debug.apk
+```
+
+Or open `android/` in Android Studio and run it on a device. The CI workflow does the same on every push and attaches `sol-1.apk` as an artifact. Pushing a tag such as `v1.0.0` creates a GitHub release with the APK.
+
+## Stack
+
+Kotlin, Jetpack Compose with Material 3 (dynamic color), Glance for the app widget, DataStore Preferences with kotlinx.serialization for storage. Min SDK 31, target SDK 35.
