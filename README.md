@@ -53,7 +53,7 @@ gradle assembleDebug
 # app/build/outputs/apk/debug/app-debug.apk
 ```
 
-Or open `android/` in Android Studio and run it on a device. The CI workflow does the same on every push and attaches `sol-1.apk` as an artifact. Pushing a tag such as `v1.0.0` creates a GitHub release with the APK.
+Or open `android/` in Android Studio and run it on a device. The CI workflow does the same on every push and attaches `sol-1.apk` as an artifact. Every push to `master` also publishes a GitHub release (tagged `v1.0.<run>`) with `sol-1.apk`, and pushing a `v*` tag does the same.
 
 ## Stack
 

@@ -44,7 +44,19 @@ jobs:
           name: sol-1-apk
           path: android/sol-1.apk
 
+      # Every push to master publishes a release so the "latest release" link on the
+      # site always has an installable APK. The action creates the tag itself.
       - name: Publish release
+        if: github.ref == 'refs/heads/master'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: Sol-1 1.0.${{ github.run_number }}
+          target_commitish: ${{ github.sha }}
+          files: android/sol-1.apk
+          generate_release_notes: true
+
+      - name: Publish tagged release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
