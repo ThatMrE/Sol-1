@@ -25,6 +25,11 @@
   .big small{font-size:20px;color:var(--muted);font-weight:500;letter-spacing:0;margin-left:8px}
   .muted{color:var(--muted);font-size:14px}
   b{font-weight:600}
+  .frames{display:flex;gap:16px;overflow-x:auto;padding:4px 2px 12px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+  .frames figure{flex:0 0 220px;margin:0;scroll-snap-align:start}
+  .frames img{width:100%;height:auto;display:block;border-radius:22px;background:#fff}
+  .frames figcaption{margin-top:10px;font-size:13px;color:var(--muted);line-height:1.4}
+  .frames figcaption b{color:var(--text);display:block;margin-bottom:2px}
 </style>
 </head>
 <body>
@@ -36,6 +41,32 @@
   <p>A sobriety and habit tracker for Android with a widget that lives on your Pixel lock screen and home screen. The count updates itself, every day, without opening the app.</p>
   <div class="big">47<small>days</small></div>
   <p class="muted">“Days since” counters with logged resets, daily habits with a check-in button right on the widget, and milestones from day 1 to year 10.</p>
+</div>
+
+<div class="card">
+  <h2>How it works</h2>
+  <div class="frames">
+    <figure>
+      <img src="docs/wireframes/01-app-home.svg" alt="1 · Add trackers. Days-since counters and daily habits live in the app." loading="lazy" width="362" height="762">
+      <figcaption><b>1 · Add trackers</b><br>Days-since counters and daily habits live in the app.</figcaption>
+    </figure>
+    <figure>
+      <img src="docs/wireframes/02-add-tracker.svg" alt="2 · Set day one. Pick the moment you decided. Hours count up from there." loading="lazy" width="362" height="762">
+      <figcaption><b>2 · Set day one</b><br>Pick the moment you decided. Hours count up from there.</figcaption>
+    </figure>
+    <figure>
+      <img src="docs/wireframes/03-lock-screen.svg" alt="3 · Lock screen widget. Swipe from the clock, tap Add, choose Sol-1." loading="lazy" width="362" height="762">
+      <figcaption><b>3 · Lock screen widget</b><br>Swipe from the clock, tap Add, choose Sol-1.</figcaption>
+    </figure>
+    <figure>
+      <img src="docs/wireframes/04-widget-picker.svg" alt="4 · Choose what it shows. Each widget can follow a different tracker." loading="lazy" width="362" height="762">
+      <figcaption><b>4 · Choose what it shows</b><br>Each widget can follow a different tracker.</figcaption>
+    </figure>
+    <figure>
+      <img src="docs/wireframes/05-home-screen.svg" alt="5 · Home screen too. Same widget, any size. Tap to open, long-press to change." loading="lazy" width="362" height="762">
+      <figcaption><b>5 · Home screen too</b><br>Same widget, any size. Tap to open, long-press to change.</figcaption>
+    </figure>
+  </div>
 </div>
 
 <div class="card">

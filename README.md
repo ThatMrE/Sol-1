@@ -16,6 +16,18 @@ Site: **[sol-1.netlify.app](https://sol-1.netlify.app)** · APK: **[latest relea
 - **Always current.** The count refreshes on the widget's own schedule and again just after midnight, after a reboot, and after time or time zone changes.
 - **Private by design.** No account, no network, no analytics. Data lives on the phone in the app's DataStore.
 
+## How it works
+
+![Sol-1 usage: add trackers, set day one, add the lock screen widget, choose what it shows, use it on the home screen](docs/wireframes/showcase.svg)
+
+1. **Add trackers.** Days-since counters and daily habits live in the app.
+2. **Set day one.** Pick the moment you decided; hours count up from there.
+3. **Lock screen widget.** Swipe from the clock, tap Add, choose Sol-1.
+4. **Choose what it shows.** Each widget can follow a different tracker.
+5. **Home screen too.** Same widget, any size. Tap to open, long-press to change.
+
+The frames are wireframes in `docs/wireframes/`, one SVG per step plus the combined strip.
+
 ## Install on a Pixel
 
 1. Download `sol-1.apk` from the [latest release](https://github.com/ThatMrE/Sol-1/releases/latest) on the phone.
